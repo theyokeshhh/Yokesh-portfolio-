@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yokesh Shanmugam — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --paper: #ede8dc;
+    --aged: #d4c9b0;
+    --ink: #1a1208;
+    --brown: #5c3d1e;
+    --rust: #b8470a;
+    --gold: #c8972a;
+    --green: #2a5c3d;
+    --typewriter: #2c2416;
+    --scanline: rgba(0,0,0,0.03);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--ink);
+    font-family: 'Courier Prime', monospace;
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* CRT scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      var(--scanline) 2px,
+      var(--scanline) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Grain texture */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.4;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--cream);
+    min-height: 100vh;
+    position: relative;
+    box-shadow: 0 0 80px rgba(200,151,42,0.15), 0 0 200px rgba(0,0,0,0.8);
+  }
+
+  /* ---- HEADER ---- */
+  header {
+    background: var(--paper);
+    border-bottom: 4px double var(--brown);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: repeating-linear-gradient(90deg, var(--rust) 0px, var(--rust) 12px, var(--gold) 12px, var(--gold) 24px, var(--green) 24px, var(--green) 36px, var(--brown) 36px, var(--brown) 48px);
+  }
+
+  .header-inner {
+    padding: 50px 50px 36px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+  }
+
+  .name-block h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 10vw, 96px);
+    letter-spacing: 6px;
+    color: var(--typewriter);
+    line-height: 0.9;
+    text-shadow: 3px 3px 0 var(--aged), 4px 4px 0 var(--brown);
+  }
+
+  .name-block .subtitle {
+    font-family: 'VT323', monospace;
+    font-size: 22px;
+    color: var(--rust);
+    letter-spacing: 3px;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+
+  .header-badge {
+    text-align: right;
+  }
+
+  .header-badge .stamp {
+    display: inline-block;
+    border: 3px solid var(--rust);
+    color: var(--rust);
+    font-family: 'VT323', monospace;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 6px 12px;
+    transform: rotate(3deg);
+    text-transform: uppercase;
+    position: relative;
+  }
+
+  .header-badge .stamp::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 1px solid var(--rust);
+    opacity: 0.4;
+  }
+
+  .contact-strip {
+    background: var(--brown);
+    padding: 10px 50px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .contact-strip a, .contact-strip span {
+    color: var(--aged);
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+
+  .contact-strip a:hover { color: var(--gold); }
+
+  .contact-strip .dot {
+    color: var(--gold);
+    opacity: 0.5;
+  }
+
+  /* ---- LAYOUT ---- */
+  main {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: calc(100vh - 160px);
+  }
+
+  /* ---- SIDEBAR ---- */
+  .sidebar {
+    background: var(--paper);
+    border-right: 2px solid var(--aged);
+    padding: 40px 28px;
+    position: relative;
+  }
+
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    top: 0; right: -6px; bottom: 0;
+    width: 4px;
+    background: repeating-linear-gradient(180deg, var(--aged) 0px, var(--aged) 8px, transparent 8px, transparent 16px);
+  }
+
+  .sidebar-section {
+    margin-bottom: 36px;
+  }
+
+  .sidebar-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--rust);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--aged);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sidebar-label::before {
+    content: '▶';
+    font-size: 7px;
+  }
+
+  /* Skills */
+  .skill-tag {
+    display: inline-block;
+    font-family: 'VT323', monospace;
+    font-size: 17px;
+    color: var(--typewriter);
+    background: var(--aged);
+    border: 1px solid var(--brown);
+    padding: 3px 9px;
+    margin: 3px 3px 3px 0;
+    letter-spacing: 1px;
+    position: relative;
+  }
+
+  .skill-tag::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; right: -2px;
+    width: 100%; height: 100%;
+    border: 1px solid var(--brown);
+    opacity: 0.3;
+  }
+
+  /* Certifications */
+  .cert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    color: var(--typewriter);
+    line-height: 1.4;
+  }
+
+  .cert-item::before {
+    content: '✦';
+    color: var(--gold);
+    font-size: 11px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  /* Interests */
+  .interest-block {
+    font-family: 'Special Elite', serif;
+    font-size: 13px;
+    color: var(--brown);
+    line-height: 1.7;
+    font-style: italic;
+    border-left: 3px solid var(--gold);
+    padding-left: 10px;
+  }
+
+  /* ---- MAIN CONTENT ---- */
+  .content {
+    padding: 40px 44px;
+  }
+
+  /* Section Headers */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    margin-top: 40px;
+  }
+
+  .section-header:first-child {
+    margin-top: 0;
+  }
+
+  .section-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 5px;
+    color: var(--typewriter);
+    text-transform: uppercase;
+  }
+
+  .section-header .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--brown), transparent);
+  }
+
+  .section-header .num {
+    font-family: 'VT323', monospace;
+    font-size: 15px;
+    color: var(--rust);
+    letter-spacing: 2px;
+  }
+
+  /* Summary */
+  .summary-box {
+    background: var(--paper);
+    border: 1px solid var(--aged);
+    border-left: 4px solid var(--rust);
+    padding: 20px 22px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+
+  .summary-box::before {
+    content: '"';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: var(--aged);
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    line-height: 1;
+  }
+
+  .summary-box p {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--typewriter);
+    padding-top: 12px;
+  }
+
+  /* Experience / Education Cards */
+  .entry {
+    position: relative;
+    padding: 20px 20px 20px 24px;
+    margin-bottom: 20px;
+    border: 1px solid var(--aged);
+    background: var(--paper);
+  }
+
+  .entry::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: repeating-linear-gradient(180deg, var(--gold) 0px, var(--gold) 6px, var(--rust) 6px, var(--rust) 12px);
+  }
+
+  .entry-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .entry-title {
+    font-family: 'Special Elite', serif;
+    font-size: 17px;
+    color: var(--typewriter);
+    font-weight: bold;
+  }
+
+  .entry-org {
+    font-family: 'VT323', monospace;
+    font-size: 17px;
+    color: var(--rust);
+    letter-spacing: 1px;
+  }
+
+  .entry-date {
+    font-family: 'VT323', monospace;
+    font-size: 15px;
+    color: var(--brown);
+    background: var(--aged);
+    padding: 2px 8px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .entry-location {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    color: var(--brown);
+    opacity: 0.8;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+
+  .entry ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .entry ul li {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    color: var(--typewriter);
+    line-height: 1.7;
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 4px;
+  }
+
+  .entry ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--rust);
+    font-size: 12px;
+  }
+
+  .cgpa-badge {
+    display: inline-block;
+    font-family: 'VT323', monospace;
+    font-size: 15px;
+    background: var(--green);
+    color: var(--cream);
+    padding: 2px 10px;
+    letter-spacing: 2px;
+    margin-top: 6px;
+  }
+
+  /* Project Card */
+  .project-card {
+    border: 2px solid var(--brown);
+    background: var(--paper);
+    padding: 24px 24px 20px;
+    position: relative;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .project-card::after {
+    content: 'PROJECT';
+    position: absolute;
+    top: -1px; right: 16px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    background: var(--rust);
+    color: var(--cream);
+    padding: 4px 8px;
+    letter-spacing: 2px;
+  }
+
+  .project-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 4px;
+    color: var(--typewriter);
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .project-card p {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--typewriter);
+  }
+
+  .project-stat {
+    display: inline-block;
+    margin-top: 14px;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    background: var(--green);
+    color: var(--cream);
+    padding: 4px 14px;
+    letter-spacing: 2px;
+  }
+
+  .pipeline-flow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .pipeline-step {
+    font-family: 'VT323', monospace;
+    font-size: 17px;
+    background: var(--aged);
+    border: 1px solid var(--brown);
+    padding: 3px 12px;
+    color: var(--typewriter);
+    letter-spacing: 1px;
+  }
+
+  .pipeline-arrow {
+    color: var(--rust);
+    font-size: 18px;
+    font-family: 'VT323', monospace;
+  }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: var(--brown);
+    border-top: 4px double var(--gold);
+    padding: 18px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  footer .footer-text {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: var(--aged);
+    letter-spacing: 2px;
+  }
+
+  footer .footer-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 18px;
+    background: var(--gold);
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+    margin-left: 4px;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  header { animation: fadeSlideIn 0.6s ease both; }
+  .sidebar { animation: fadeSlideIn 0.7s ease 0.1s both; }
+  .content > * { animation: fadeSlideIn 0.5s ease both; }
+
+  .entry:hover {
+    box-shadow: 4px 4px 0 var(--aged);
+    transform: translateX(-2px);
+    transition: all 0.15s ease;
+  }
+
+  .project-card:hover {
+    box-shadow: 6px 6px 0 var(--aged);
+    transform: translateX(-2px);
+    transition: all 0.15s ease;
+  }
+
+  /* ---- DECORATIVE CORNER ---- */
+  .corner-ornament {
+    position: absolute;
+    font-size: 11px;
+    color: var(--aged);
+    font-family: 'VT323', monospace;
+    letter-spacing: 1px;
+    opacity: 0.6;
+  }
+
+  .corner-ornament.tl { top: 8px; left: 8px; }
+  .corner-ornament.tr { top: 8px; right: 8px; }
+  .corner-ornament.bl { bottom: 8px; left: 8px; }
+  .corner-ornament.br { bottom: 8px; right: 8px; }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 680px) {
+    main { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px solid var(--aged); }
+    .header-inner { grid-template-columns: 1fr; }
+    .header-badge { text-align: left; }
+    .contact-strip { padding: 10px 24px; }
+    .content { padding: 28px 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="name-block">
+        <h1>Yokesh<br>Shanmugam</h1>
+        <div class="subtitle">▍ Data Analyst &amp; Automation Engineer ▍</div>
+      </div>
+      <div class="header-badge">
+        <div class="stamp">Chennai, India<br>Available Now</div>
+      </div>
+    </div>
+    <div class="contact-strip">
+      <a href="mailto:the.yokeshhh@gmail.com">✉ the.yokeshhh@gmail.com</a>
+      <span class="dot">◆</span>
+      <span>☎ 8525094596</span>
+      <span class="dot">◆</span>
+      <a href="https://linkedin.com/in/yokesh-shanmugam" target="_blank">⌘ linkedin.com/in/yokesh-shanmugam</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Data Skills</div>
+        <span class="skill-tag">Data Cleaning</span>
+        <span class="skill-tag">Visualization</span>
+        <span class="skill-tag">Dashboarding</span>
+        <span class="skill-tag">Excel</span>
+        <span class="skill-tag">Google Sheets</span>
+        <span class="skill-tag">SQL Basics</span>
+        <span class="skill-tag">Power BI</span>
+        <span class="skill-tag">Python</span>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Automation</div>
+        <span class="skill-tag">n8n</span>
+        <span class="skill-tag">API Integration</span>
+        <span class="skill-tag">Workflow Auto</span>
+        <span class="skill-tag">ChatGPT</span>
+        <span class="skill-tag">Gemini AI</span>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Programming</div>
+        <span class="skill-tag">HTML</span>
+        <span class="skill-tag">CSS</span>
+        <span class="skill-tag">JavaScript</span>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Certifications</div>
+        <div class="cert-item">AI Data Analytics Certified</div>
+        <div class="cert-item">Web Development Internship — HTML, CSS, JavaScript</div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Interests</div>
+        <div class="interest-block">Fashion &amp; Portraits — Crafting aesthetic frames that reflect confidence, character, and personal style.</div>
+      </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="content">
+
+      <!-- ABOUT -->
+      <div class="section-header">
+        <span class="num">01</span>
+        <h2>About</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="summary-box">
+        <p>
+          Aspiring Data Analyst &amp; Automation Engineer with strong skills in data cleaning, analysis, dashboard creation, and automation workflows using n8n and AI tools. Experienced in transforming raw data into meaningful insights and building automated systems that reduce manual work by up to 70%. Known for fast learning, consistency, and problem-solving — ready to contribute to data-driven teams and deliver impactful results from day one.
+        </p>
+      </div>
+
+      <!-- EXPERIENCE -->
+      <div class="section-header">
+        <span class="num">02</span>
+        <h2>Experience</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-meta">
+          <div>
+            <div class="entry-title">Web Development Intern</div>
+            <div class="entry-org">Quantum Sys Technology Pvt Ltd</div>
+          </div>
+          <div class="entry-date">05/2025 – 06/2025</div>
+        </div>
+        <div class="entry-location">📍 Singapore (Remote / Tanjore)</div>
+        <ul>
+          <li>Developed responsive and user-friendly web pages using HTML, CSS, and JavaScript.</li>
+          <li>Improved UI/UX components based on client requirements and feedback.</li>
+          <li>Performed debugging, testing, and documentation for front-end features.</li>
+        </ul>
+      </div>
+
+      <!-- EDUCATION -->
+      <div class="section-header">
+        <span class="num">03</span>
+        <h2>Education</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-meta">
+          <div>
+            <div class="entry-title">Bachelor of Computer Applications</div>
+            <div class="entry-org">Periyar Maniammai Institute of Science &amp; Technology</div>
+          </div>
+          <div class="entry-date">2022 – 2025</div>
+        </div>
+        <div class="entry-location">📍 Tanjore, India</div>
+        <div class="cgpa-badge">✦ CGPA: 7.12</div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-meta">
+          <div>
+            <div class="entry-title">Data Analytics Training</div>
+            <div class="entry-org">Q Spiders</div>
+          </div>
+          <div class="entry-date">08/2025 – 12/2025</div>
+        </div>
+        <div class="entry-location">📍 Velachery, Chennai</div>
+        <ul>
+          <li>Completed training in data analysis, data cleaning, and visualization.</li>
+          <li>Hands-on experience with Excel, SQL, Python, and Power BI.</li>
+        </ul>
+      </div>
+
+      <!-- PROJECT -->
+      <div class="section-header">
+        <span class="num">04</span>
+        <h2>Projects</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="project-card">
+        <h3>Automated YouTube Shorts Pipeline</h3>
+        <p>
+          Built a fully automated end-to-end content generation pipeline using n8n workflow automation. The system takes an initial idea and autonomously generates a script, synthesizes voice-over audio, and assembles a draft video — completely hands-free.
+        </p>
+        <div class="pipeline-flow">
+          <span class="pipeline-step">💡 Idea</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step">📝 Script</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step">🔊 Voice</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step">🎬 Draft Video</span>
+        </div>
+        <div class="project-stat">⚡ Saved 5–7 Hours / Week</div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-text">© 2025 YOKESH SHANMUGAM — ALL RIGHTS RESERVED<span class="footer-cursor"></span></div>
+    <div class="footer-text">CHENNAI, INDIA ◆ DATA × AUTOMATION</div>
+  </footer>
+
+</div>
+</body>
+</html>
